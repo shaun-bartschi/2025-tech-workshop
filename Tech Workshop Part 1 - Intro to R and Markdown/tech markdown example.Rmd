@@ -1,0 +1,55 @@
+---
+title: "tech workshop markdown example"
+author: "Shaun Bartschi"
+date: "2025-06-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown Example
+
+# Getting Started
+
+First, call our library
+```{r, message = FALSE}
+library(tidyverse)
+```
+
+Now plot the relationship between horsepower and mpg for cars in the mtcars dataset (which is a dataset internal to R). Show a local regression smooth, along with the linear model estimate. 
+
+```{r}
+ggplot(mtcars, aes(x = hp, y = mpg)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE, method = 'loess', formula = 'y ~ x') +
+  geom_smooth(se = FALSE, method = "lm", col = "red", formula = 'y ~ x')
+```
+
+
+```{r}
+# The trend is not very linear, but for simplicity, lets assume that it is 
+# "linear-ish". Fit a linear model and obtain the coeffcients of the model
+# that uses horsepower to predict fuel economy. 
+tlm <- lm(mpg ~ hp, data = mtcars)
+summary(tlm)
+```
+
+
+
+```{r}
+# Use LaTeX to create a model that has the following form
+# y_hat = b_0 + b_1*h_p
+# where b_0 and b_1 are the model coefficients. 
+
+# Knit the results to pdf to see if your equation rendered properly.
+```
+\[
+     \hat{y} = b_0 + b_1\cdot h_p
+\]
+where \(b_0\) and \(b_1\) are the model coefficients.  Using values from our regression, we get
+
+\[
+     \hat{y} = `r tlm$coefficients[1]` + `r tlm$coefficients[2]` \cdot h_p
+\]
