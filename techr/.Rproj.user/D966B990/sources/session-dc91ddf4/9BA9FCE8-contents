@@ -1,0 +1,67 @@
+---
+title: "Tech Workshop Quattro Test Document"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+# Running our Example
+
+### Import Library
+
+```{r, echo = FALSE}
+library(tidyverse)
+```
+
+### Plot Cars Dataset w/ Trends
+
+```{r}
+ggplot(mtcars, aes(x = hp, y = mpg)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE, method = 'loess', formula = 'y ~ x') +
+  geom_smooth(se = FALSE, method = "lm", col = "red", formula = 'y ~ x')
+```
+
+### Now we create the Linear Model
+
+```{r}
+# The trend is not very linear, but for simplicity, lets assume that it is 
+# "linear-ish". Fit a linear model and obtain the coeffcients of the model
+# that uses horsepower to predict fuel economy. 
+tlm <- lm(mpg ~ hp, data = mtcars)
+summary(tlm)
+```
+
+### Finally, present info in $\LaTeX$
+
+Use LaTeX to create a model that has the following form:
+
+$$ \hat{y} = b_0 + b_1\cdot h_p $$
+
+where $b_0$ and $b_1$ are the model coefficients.
+
+Using values from our regression, we get
+
+$$
+\hat{y} = `r tlm$coefficients[1]` + `r tlm$coefficients[2]` \cdot h_p 
+$$
